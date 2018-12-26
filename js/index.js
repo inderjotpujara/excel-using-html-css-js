@@ -10,7 +10,7 @@ for (var i = 1; i <= rows; i++) {
     let col = "";
     for (var j = 1; j <= columns; j++) {
         // console.log(i + "" + j)
-        col += `<td ` + "id=" + i + "" + j + ` ` + "onclick=getValue(" + i + "" + j + ")" + `> 
+        col += `<td ` + "id=" + i + "" + j + ` ` + "onclick=selectValue(" + i + "" + j + ")" + `> 
                 <input type="text" name="FirstName" value=` + i + j + `>  </td>`
     }
     mytable += "<tr>" + col + "</tr>";
@@ -33,6 +33,7 @@ function  showTable() {
     document.write(mytable);
 }
 
+// setter for rows and columns
 var setRows=(Rows)=>{
     
     rows=Rows
@@ -45,8 +46,8 @@ var setColumns = (Columns) => {
 }
 
 
-
-var getValue = (id) => {
+// select the  cell
+var selectValue = (id) => {
     currentId = id;
     var Row = document.getElementById(id);
     var Cells = Row.getElementsByTagName("input");
@@ -59,12 +60,14 @@ var getValue = (id) => {
     // console.log(window.event.which)
 }
 
+
+// key press events
 var KeyPress = (e) => {
     var evtobj = window.event ? event : e
     var Row = document.getElementById(currentId);
     var Cells = Row.getElementsByTagName("input");
     // console.log(evtobj)
-    if (evtobj.keyCode == 67 && evtobj.ctrlKey) {
+    if (evtobj.keyCode == 67 && evtobj.ctrlKey) { // on copy
         // console.log(currentId);
         if (selectedIds.length != 0) {
             var textarea = document.createElement("textarea");
@@ -88,7 +91,7 @@ var KeyPress = (e) => {
             document.execCommand("copy");
         }
 
-    } else if (evtobj.keyCode == 88 && evtobj.ctrlKey) {
+    } else if (evtobj.keyCode == 88 && evtobj.ctrlKey) { // on cut
         // console.log(currentId);
         if (selectedIds.length != 0) {
 
@@ -109,7 +112,7 @@ var KeyPress = (e) => {
             document.execCommand("copy");
         }
 
-    } else if (evtobj.ctrlKey && window.event.which == 1) {
+    } else if (evtobj.ctrlKey && window.event.which == 1) { // ctrl+select(works with mouse)
         if (!selectedValues.includes(Cells[0].value)) {
             selectedValues.push(Cells[0].value)
             selectedIds.push(currentId)
@@ -119,7 +122,7 @@ var KeyPress = (e) => {
                 document.getElementById(id).style.border = "1px solid #0000FF";
             })
         }
-    } else if (evtobj.ctrlKey && evtobj.keyCode == 86 && targetIds.length == 0 ) {
+    } else if (evtobj.ctrlKey && evtobj.keyCode == 86 && targetIds.length == 0 ) { // paste
         // let id = document.getElementById(11)
         // let tag = id.getElementsByTagName('input')
         // tag[0].value()
