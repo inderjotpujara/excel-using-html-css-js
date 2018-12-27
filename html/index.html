@@ -12,7 +12,7 @@
 </head>
 
 <body>
-    <header class="primary-header">
+    <header class="primary-header" style="display:flex">
         <!-- <div id="setRow">
             <button onclick="setRows((document.getElementById('r').value))">set Rows</button>
             <input id='r' type="number" value="7">
@@ -25,22 +25,25 @@
             
         </div> -->
         <div id="setRow">
-            <button onclick="newTable.setRows((document.getElementById('r').value));newTable.makeTable()">set Rows</button>
-            <input id='r' type="number" value="7">
+            <button style="margin-bottom: 10px;" onclick="newTable.setRows((document.getElementById('r').value));newTable.makeTable()">set Rows</button>
+            <input style="text-align: center" id='r' type="number" value="7">
         </div>
         <div id="setCol">
-<button onclick="newTable.setColumns((document.getElementById('c').value));newTable.makeTable()">set Columns</button>
-            <input id='c' type="number" value="7">
+            <button style="margin-left: 10px;" onclick="newTable.setColumns((document.getElementById('c').value));newTable.makeTable()">set
+                Columns</button>
+            <input style="text-align: center"id='c' type="number" value="7">
         </div>
-        <div id="table">
-        
+        <div>
+            <button style="margin-left: 10px;" onclick="newTable.sum   ()">Sum Of Selected Cells</button>
+            <input style="text-align: center"id='Sum' type="number" value="">
         </div>
+       
     </header>
+    <div id="table">
+    
+    </div>
     <div>
-        <div >
-            <button onclick="newTable.sum   ()">Sum Of Selected Cells</button>
-            <input id='Sum' type="number" value="">
-        </div>
+       
     </div>
     <footer class="primary-footer">
         <div id="clipboard" style="display:none"></div>

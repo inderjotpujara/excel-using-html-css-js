@@ -26,11 +26,12 @@ function Table() {
         console.log(this.columns)
         var table = document.getElementById('table');
         var tbl = document.createElement('table');
-        // tbl.style.width = '100%';
+        tbl.style.width = 'max-content';
         tbl.setAttribute('border', '1');
         var tbdy = document.createElement('tbody');
         for (var i = 1; i <= this.rows; i++) {
             var tr = document.createElement('tr');
+            tr.style.width = '100%';
             for (var j = 1; j <= this.columns; j++) {
 
                 var td = document.createElement('td');
@@ -38,6 +39,7 @@ function Table() {
                 td.setAttribute('onclick', " selectValue(" + i + "" + j + ")")
                 var input = document.createElement('input')
                 input.style.width = '100%';
+                input.style.textAlign = 'center';
                 input.setAttribute('value', i + "" + j)
                 td.appendChild(input)
                 tr.appendChild(td)
@@ -60,11 +62,12 @@ function Table() {
     }
 }
 
- let newTable = new Table()
- newTable.rows = 4
- newTable.columns = 4
+let newTable = new Table()
+// newTable.rows = 20
+// newTable.columns = 10
 document.addEventListener('DOMContentLoaded', function () {
-   
+    newTable.rows = document.getElementById('r').value
+    newTable.columns = document.getElementById('c').value
     newTable.makeTable();
 })
 
