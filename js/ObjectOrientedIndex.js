@@ -7,25 +7,34 @@ var Rows
 var Cells
 
 function Table() {
+    this.data = []
     this.rows
     this.columns
+    this.getRows = function () {
 
+        return parseInt(this.rows)
+    };
+    this.getColumns = function () {
+        console.log(this.columns)
+        return this.columns
+    };
     this.setRows = function (row) {
         console.log(row)
         this.rows = row;
+        save.saveRows(row)
     };
     this.setColumns = function (column) {
         console.log(column)
         this.columns = column;
+        save.saveColumns(column)
     };
-
     this.makeTable = function () {
         var oldTable = document.getElementById("table");
         while (oldTable.hasChildNodes()) {
             oldTable.removeChild(oldTable.firstChild);
         }
-        console.log(this.rows)
-        console.log(this.columns)
+        // console.log(this.rows)
+        // console.log(this.columns)
         var table = document.getElementById('table');
         var tbl = document.createElement('table');
         tbl.style.width = 'max-content';
@@ -45,7 +54,46 @@ function Table() {
                 input.setAttribute('value', i + "" + j)
                 td.appendChild(input)
                 tr.appendChild(td)
+            }
+            tbdy.appendChild(tr);
+        }
+        tbl.appendChild(tbdy);
+        table.appendChild(tbl)
+    };
+    this.savedTable = function (data) {
+        var count = 0
+        console.log(this.rows)
+        console.log(this.columns)
+        var oldTable = document.getElementById("table");
+        while (oldTable.hasChildNodes()) {
+            oldTable.removeChild(oldTable.firstChild);
+        }
+        // console.log(this.rows)
+        // console.log(this.columns)
+        var table = document.getElementById('table');
+        var tbl = document.createElement('table');
+        tbl.style.width = 'max-content';
+        tbl.setAttribute('border', '1');
+        var tbdy = document.createElement('tbody');
+        for (var i = 1; i <= this.rows; i++) {
 
+            var tr = document.createElement('tr');
+            tr.style.width = '100%';
+            for (var j = 1; j <= this.columns; j++) {
+                console.log('inside saved table')
+                var td = document.createElement('td');
+                td.setAttribute("id", i + "" + j);
+                td.setAttribute('onclick', " selectValue(" + i + "" + j + ")")
+                var input = document.createElement('input')
+                input.style.width = '100%';
+                input.style.textAlign = 'center';
+                // console.log((i + "" + j) + 1)
+                // debugger
+                console.log(count, Object.values(data[count]))
+                input.setAttribute('value', Object.values(data[count]))
+                td.appendChild(input)
+                tr.appendChild(td)
+                count++
             }
             tbdy.appendChild(tr);
         }
@@ -62,15 +110,67 @@ function Table() {
         console.log(sum)
         document.getElementById('Sum').value = sum
     }
+    this.tableData = function () {
+        this.data=[]
+        for (let i = 1; i <= this.rows; i++) {
+            for (let j = 1; j <= this.columns; j++) {
+                let tr = document.getElementById(i + '' + j)
+                // console.log(document.getElementById(i + '' + j))
+                let value = tr.getElementsByTagName('input')[0].value
+                let dat = {}
+                dat[i + "" + j] = value
+                this.data.push(dat)
+            }
+        }
+        // console.log(this.data)
+        return this.data
+    }
+}
+
+function AutoSave() {
+    this.saveRows = function (rows) {
+        window.localStorage.removeItem('rows')
+        window.localStorage.setItem('rows', rows)
+    };
+    this.saveColumns = function (columns) {
+        window.localStorage.removeItem('columns')
+        window.localStorage.setItem('columns', columns)
+    }
+    this.saveCells = function (data) {
+        console.log(data);
+        window.localStorage.removeItem('data')
+        window.localStorage.setItem('data', JSON.stringify(data))
+        console.log(window.localStorage.getItem('data'))
+    }
 }
 
 let newTable = new Table()
-// newTable.rows = 20
-// newTable.columns = 10
+let save = new AutoSave()
+if (window.localStorage.getItem('rows')) {
+    newTable.rows = window.localStorage.getItem('rows')
+
+} else {
+    newTable.rows = 2
+}
+if (window.localStorage.getItem('columns')) {
+    newTable.columns = window.localStorage.getItem('columns')
+} else {
+    newTable.columns = 2
+}
 document.addEventListener('DOMContentLoaded', function () {
-    newTable.rows = document.getElementById('r').value
-    newTable.columns = document.getElementById('c').value
-    newTable.makeTable();
+    // newTable.rows = document.getElementById('r').value
+    // newTable.columns = document.getElementById('c').value
+    // console.log(parseInt(newTable.getColumns()))
+    if (window.localStorage.getItem('data')) {
+        var con = JSON.parse(window.localStorage.getItem('data'))
+        newTable.savedTable(con);
+        console.log(con)
+        // debugger 
+    } else {
+        newTable.makeTable();
+    }
+
+    // console.log(newTable.tableData());
 })
 
 var selectValue = (id) => {
@@ -135,12 +235,15 @@ var KeyPress = (e) => {
                 document.execCommand("cut");
             })
             console.log(cutCells)
+            save.saveCells(newTable.tableData())
             document.getElementById('clipboard').innerHTML = cutCells
+
 
         } else {
             // console.log(Cells[0]);
             Cells[0].select();
-            document.execCommand("copy");
+            document.execCommand("cur");
+            save.saveCells(newTable.tableData())
         }
 
     } else if (evtobj.ctrlKey && window.event.which == 1) { // ctrl+select(works with mouse)
@@ -180,6 +283,7 @@ var KeyPress = (e) => {
             // console.log(id)
             document.getElementById(id).style.border = 'none';
         })
+        save.saveCells(newTable.tableData())
         selectedIds = []
         selectedValues = []
         targetIds = []
