@@ -48,13 +48,23 @@ function Table() {
         tbl.appendChild(tbdy);
         table.appendChild(tbl)
     };
+    this.sum = function () {
+        sum = 0;
+        selectedIds.forEach((value) => {
+            let idTag = document.getElementById(value)
+            let tag = idTag.getElementsByTagName('input')
+            sum += JSON.parse(tag[0].value)
+        })
+        console.log(sum)
+        document.getElementById('Sum').value = sum
+    }
 }
 
-let newTable = new Table()
-newTable.rows = 4
-newTable.columns = 4
 
 document.addEventListener('DOMContentLoaded', function () {
+    let newTable = new Table()
+    newTable.rows = 4
+    newTable.columns = 4
     newTable.makeTable();
 })
 
@@ -172,15 +182,15 @@ var KeyPress = (e) => {
 
 }
 
-var sumOfSelected = () => {
-    sum = 0;
-    selectedIds.forEach((value) => {
-        let idTag = document.getElementById(value)
-        let tag = idTag.getElementsByTagName('input')
-        sum += JSON.parse(tag[0].value)
-    })
-    console.log(sum)
-    document.getElementById('Sum').value = sum
-}
+// var sumOfSelected = () => {
+//     sum = 0;
+//     selectedIds.forEach((value) => {
+//         let idTag = document.getElementById(value)
+//         let tag = idTag.getElementsByTagName('input')
+//         sum += JSON.parse(tag[0].value)
+//     })
+//     console.log(sum)
+//     document.getElementById('Sum').value = sum
+// }
 document.onkeydown = KeyPress;
 document.onclick = KeyPress;
