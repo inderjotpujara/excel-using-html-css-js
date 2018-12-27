@@ -60,11 +60,11 @@ function Table() {
     }
 }
 
-
+ let newTable = new Table()
+ newTable.rows = 4
+ newTable.columns = 4
 document.addEventListener('DOMContentLoaded', function () {
-    let newTable = new Table()
-    newTable.rows = 4
-    newTable.columns = 4
+   
     newTable.makeTable();
 })
 
