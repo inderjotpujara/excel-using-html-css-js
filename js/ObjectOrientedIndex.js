@@ -1,97 +1,63 @@
-var mytable 
 var currentId;
 var selectedValues = [];
 var selectedIds = [];
 var targetIds = []
 var sum = 0
-var rows = 7
-var columns = 7
-var div
 
+function Table() {
+    this.rows
+    this.columns
 
+    this.setRows = function (row) {
+        console.log(row)
+        this.rows = row;
+    };
+    this.setColumns = function (column) {
+        console.log(column)
+        this.columns = column;
+    };
 
-function showTable() {
-    // var myTable = document.getElementById("table");
-    // console.log(myTable)
-    // myTable.removeChild(myTable.childNodes[0])
-    var table = document.getElementById('table');
-    console.log(table)
-    var tbl = document.createElement('table');
-    tbl.style.width = '100%';
-    tbl.setAttribute('border', '1');
-    var tbdy = document.createElement('tbody');
-    for (var i = 1; i <= rows; i++) {
-        var tr = document.createElement('tr');
-        for (var j = 1; j <= columns; j++) {
-
-            var td = document.createElement('td');
-            td.setAttribute("id", i + "" + j);
-            td.setAttribute('onclick', " selectValue(" + i + "" + j + ")")
-            var input = document.createElement('input')
-            input.setAttribute('value', i + "" + j)
-            td.appendChild(input)
-            tr.appendChild(td)
-
+    this.makeTable = function () {
+        var oldTable = document.getElementById("table");
+        while (oldTable.hasChildNodes()) {
+            oldTable.removeChild(oldTable.firstChild);
         }
-        tbdy.appendChild(tr);
-    }
-    tbl.appendChild(tbdy);
-    table.appendChild(tbl)
+        console.log(this.rows)
+        console.log(this.columns)
+        var table = document.getElementById('table');
+        var tbl = document.createElement('table');
+        // tbl.style.width = '100%';
+        tbl.setAttribute('border', '1');
+        var tbdy = document.createElement('tbody');
+        for (var i = 1; i <= this.rows; i++) {
+            var tr = document.createElement('tr');
+            for (var j = 1; j <= this.columns; j++) {
+
+                var td = document.createElement('td');
+                td.setAttribute("id", i + "" + j);
+                td.setAttribute('onclick', " selectValue(" + i + "" + j + ")")
+                var input = document.createElement('input')
+                input.style.width = '100%';
+                input.setAttribute('value', i + "" + j)
+                td.appendChild(input)
+                tr.appendChild(td)
+
+            }
+            tbdy.appendChild(tr);
+        }
+        tbl.appendChild(tbdy);
+        table.appendChild(tbl)
+    };
 }
+
+let newTable = new Table()
+newTable.rows = 4
+newTable.columns = 4
 
 document.addEventListener('DOMContentLoaded', function () {
-    console.log('hi')
-    // div = document.getElementById('setCol');
-    // // debugger
-    // div.insertAdjacentHTML('afterend', mytable)
-    var table = document.getElementById('table');
-    var tbl = document.createElement('table');
-    // tbl.style.width = '100%';
-    tbl.setAttribute('border', '1');
-    var tbdy = document.createElement('tbody');
-    for (var i = 1; i <= rows; i++) {
-        var tr = document.createElement('tr');
-        for (var j = 1; j <= columns; j++) {
-
-            var td = document.createElement('td');
-            td.setAttribute("id", i + "" + j);
-            td.setAttribute('onclick', " selectValue(" + i + "" + j + ")")
-            var input = document.createElement('input')
-            input.style.width = '100%';
-            input.setAttribute('value', i + "" + j)
-            td.appendChild(input)
-            tr.appendChild(td)
-
-        }
-        tbdy.appendChild(tr);
-    }
-    tbl.appendChild(tbdy);
-    table.appendChild(tbl)
+    newTable.makeTable();
 })
 
-// setter for rows and columns
-var setRows = (Rows) => {
-    rows = Rows
-     var myTable = document.getElementById("table");
-     while (myTable.hasChildNodes()) {
-         myTable.removeChild(myTable.firstChild);
-     }
-    //  console.log(myTable.childNodes[0])
-    //  myTable.removeChild(myTable.childNodes[0])
-    showTable()
-
-}
-var setColumns = (Columns) => {
-    columns = Columns
-    var myTable = document.getElementById("table");
-    while (myTable.hasChildNodes()) {
-        myTable.removeChild(myTable.firstChild);
-    }
-    showTable()
-}
-
-
-// select the  cell
 var selectValue = (id) => {
     currentId = id;
     var Row = document.getElementById(id);

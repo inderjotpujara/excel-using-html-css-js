@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sheet</title>
-    <script type="text/javascript" src="../js/index.js"></script>
+    <script type="text/javascript" src="../js/new.js"></script>
     <!-- <link rel="stylesheet" href="assets/stylesheets/shop.css"> -->
     <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
         crossorigin="anonymous"> -->
@@ -13,7 +13,7 @@
 
 <body>
     <header class="primary-header">
-        <div id="setRow">
+        <!-- <div id="setRow">
             <button onclick="setRows((document.getElementById('r').value))">set Rows</button>
             <input id='r' type="number" value="7">
         </div>
@@ -23,6 +23,17 @@
         </div>
         <div id ="table">
             
+        </div> -->
+        <div id="setRow">
+            <button onclick="newTable.setRows((document.getElementById('r').value));newTable.makeTable()">set Rows</button>
+            <input id='r' type="number" value="7">
+        </div>
+        <div id="setCol">
+<button onclick="newTable.setColumns((document.getElementById('c').value));newTable.makeTable()">set Columns</button>
+            <input id='c' type="number" value="7">
+        </div>
+        <div id="table">
+        
         </div>
     </header>
     <div>
