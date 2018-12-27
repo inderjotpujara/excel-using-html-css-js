@@ -13,20 +13,26 @@
 
 <body>
     <header class="primary-header">
-        <div>
+        <div id="setRow">
             <button onclick="setRows((document.getElementById('r').value))">set Rows</button>
-            <input id='r' type="number">
+            <input id='r' type="number" value="7">
         </div>
-        <div>
-            Columns =
-            <input id='c' type="number">
+        <div id="setCol">
+            <button onclick="setColumns((document.getElementById('c').value))">set Columns</button>
+            <input id='c' type="number" value="7">
+        </div>
+        <div id ="table">
+            
         </div>
     </header>
     <div>
-
+        <div >
+            <button onclick="sumOfSelected()">Sum Of Selected Cells</button>
+            <input id='Sum' type="number" value="">
+        </div>
     </div>
     <footer class="primary-footer">
-
+        <div id="clipboard" style="display:none"></div>
     </footer>
 </body>
 
