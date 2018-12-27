@@ -3,6 +3,8 @@ var selectedValues = [];
 var selectedIds = [];
 var targetIds = []
 var sum = 0
+var Rows
+var Cells
 
 function Table() {
     this.rows
@@ -73,8 +75,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
 var selectValue = (id) => {
     currentId = id;
-    var Row = document.getElementById(id);
-    var Cells = Row.getElementsByTagName("input");
+    Row = document.getElementById(id);
+    Cells = Row.getElementsByTagName("input");
     // console.log(Cells[0].value);
     Cells[0].select();
     // document.execCommand("copy");
@@ -90,8 +92,8 @@ var KeyPress = (e) => {
     // e.stopPropagation();
     // e.preventDefault();
     var evtobj = window.event ? event : e
-    var Row = document.getElementById(currentId);
-    var Cells = Row.getElementsByTagName("input");
+    // var Row = document.getElementById(currentId);
+    // var Cells = Row.getElementsByTagName("input");
     // console.log(evtobj)
     if (evtobj.keyCode == 67 && evtobj.ctrlKey) { // on copy
         // console.log(currentId);
@@ -185,15 +187,5 @@ var KeyPress = (e) => {
 
 }
 
-// var sumOfSelected = () => {
-//     sum = 0;
-//     selectedIds.forEach((value) => {
-//         let idTag = document.getElementById(value)
-//         let tag = idTag.getElementsByTagName('input')
-//         sum += JSON.parse(tag[0].value)
-//     })
-//     console.log(sum)
-//     document.getElementById('Sum').value = sum
-// }
 document.onkeydown = KeyPress;
 document.onclick = KeyPress;
