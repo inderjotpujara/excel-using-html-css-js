@@ -6,6 +6,53 @@ var sum = 0
 var Rows
 var Cells
 
+function Cell() {
+    this.color = 'white'
+    this.row
+    this.column
+    
+    var cell = document.createElement('div')
+    cell.style.width = 'max-content';
+    cell.setAttribute('border', '1');
+    cell.setAttribute('value', '1');
+    cell.setAttribute('onmouseover', 'onMouseOver()')
+    var input = document.createElement('input')
+    input.style.width = '100%';
+    input.style.textAlign = 'center';
+    input.style.background = this.color
+
+    this.setColor = function (color) {
+        this.color = color
+        input.style.background = color
+    }
+    this.setInputOnclick = function (data) {
+        console.log(data)
+    }
+    this.setInputValue = function (value) {
+        input.setAttribute('value', value)
+    }
+
+    this.setInputOnChange = function () {
+        input.setAttribute('onchange', 'changed()')
+    }
+
+    this.setId = function (id) {
+        cell.setAttribute("id", id);
+    }
+
+
+    this.setOnClick = function (id) {
+        cell.setAttribute('onclick', " selectValue(" + id + ")")
+    }
+
+    this.appendInput = function () {
+        cell.appendChild(input)
+    }
+    this.getCell = function () {
+        return cell
+    }
+}
+
 function Table() {
     this.data = []
     this.rows
@@ -31,38 +78,30 @@ function Table() {
         save.saveColumns(column)
     };
     this.makeTable = function () {
+        var table = document.getElementById('table');
         var oldTable = document.getElementById("table");
         while (oldTable.hasChildNodes()) {
             oldTable.removeChild(oldTable.firstChild);
         }
-        var table = document.getElementById('table');
-        var tbl = document.createElement('table');
-        tbl.style.width = 'max-content';
-        tbl.setAttribute('border', '1');
-        var tbdy = document.createElement('tbody');
         for (var i = 1; i <= this.rows; i++) {
-            var tr = document.createElement('tr');
-            var headTr = document.createElement('tr');
-            tr.style.width = '100%';
-            headTr.style.width = '100%';
+            var row = document.createElement("div");
             for (var j = 1; j <= this.columns; j++) {
-
-                var td = document.createElement('td');
-                td.setAttribute("id", i + "" + j);
-                td.setAttribute('onclick', " selectValue(" + i + "" + j + ")")
-                var input = document.createElement('input')
-                input.style.width = '100%';
-                input.style.textAlign = 'center';
-                input.setAttribute('value', i + "" + j)
-                input.setAttribute('onchange', 'changed()')
-                td.appendChild(input)
-                tr.appendChild(td)
+                // console.log("hi")
+                var newCell = new Cell()
+                newCell.setId(i + "" + j)
+                newCell.setOnClick(i + "" + j)
+                newCell.setInputValue(i + "" + j)
+                newCell.setInputOnChange()
+                newCell.setInputOnclick(newCell)
+                newCell.appendInput()
+                var cell = newCell.getCell()
+                // console.log(cell)
+                row.appendChild(cell);
+                row.style.display = 'flex'
             }
-            tbdy.appendChild(tr);
+            // console.log(i)
+            table.appendChild(row)
         }
-       
-        tbl.appendChild(tbdy);
-        table.appendChild(tbl)
     };
     this.savedTable = function (data) {
         var count = 0
@@ -75,42 +114,44 @@ function Table() {
         // console.log(this.rows)
         // console.log(this.columns)
         var table = document.getElementById('table');
-        var tbl = document.createElement('table');
-        tbl.style.width = 'max-content';
-        tbl.setAttribute('border', '1');
-        var tbdy = document.createElement('tbody');
         for (var i = 1; i <= this.rows; i++) {
-
-            var tr = document.createElement('tr');
-            tr.style.width = '100%';
+            var row = document.createElement("div");
             for (var j = 1; j <= this.columns; j++) {
-                console.log('inside saved table')
+                // console.log('inside saved table')
                 var td = document.createElement('td');
                 td.setAttribute("id", i + "" + j);
                 td.setAttribute('onclick', " selectValue(" + i + "" + j + ")")
                 var input = document.createElement('input')
                 input.style.width = '100%';
                 input.style.textAlign = 'center';
+
+                var newCell = new Cell()
+                newCell.setId(i + "" + j)
+                newCell.setOnClick(i + "" + j)
                 // console.log((i + "" + j) + 1)
                 // debugger
-                console.log(data[count]);
+                // console.log(data[count]);
 
                 if (data[count] && Object.keys(data[count]) == i + "" + j) {
-                    console.log(count, Object.keys(data[count]), i + "" + j, Object.keys(data[count]) == i + "" + j)
-                    input.setAttribute('value', Object.values(data[count]))
+
+                    newCell.setInputValue(Object.values(data[count]))
                     count++
                 } else {
-                    input.setAttribute('value', i + "" + j)
-                }
-                input.setAttribute('onchange', 'changed()')
-                td.appendChild(input)
-                tr.appendChild(td)
 
+                    newCell.setInputValue(i + "" + j)
+                }
+                newCell.setInputOnChange()
+                newCell.appendInput()
+                var cell = newCell.getCell()
+                // console.log(cell)
+                row.appendChild(cell);
+                row.style.display = 'flex'
             }
-            tbdy.appendChild(tr);
+            // console.log(i)
+
+            table.appendChild(row)
         }
-        tbl.appendChild(tbdy);
-        table.appendChild(tbl)
+
     };
     this.sum = function () {
         sum = 0;
@@ -169,6 +210,7 @@ function AutoSave() {
     }
 }
 
+
 let newTable = new Table()
 let save = new AutoSave()
 if (window.localStorage.getItem('rows')) {
@@ -182,27 +224,46 @@ if (window.localStorage.getItem('columns')) {
     newTable.columns = 4
 }
 document.addEventListener('DOMContentLoaded', function () {
-    // newTable.rows = document.getElementById('r').value
-    // newTable.columns = document.getElementById('c').value
-    // console.log(parseInt(newTable.getColumns()))
     if (window.localStorage.getItem('data')) {
         var con = JSON.parse(window.localStorage.getItem('data'))
         newTable.savedTable(con);
+        // newTable.makeTable();
         console.log(con)
-        // debugger 
     } else {
         newTable.makeTable();
     }
-    // console.log(newTable.tableData());
 })
+
 var changed = () => {
     save.saveCells(newTable.tableData())
+}
+var changeColor = (data) => {
+    console.log(data)
+}
+var onMouseOver = () => {
+
+    if (window.event.which == 1) {
+        console.log(event.target.parentElement.id)
+        currentId = event.target.parentElement.id;
+        Row = document.getElementById(event.target.parentElement.id);
+        Cells = Row.getElementsByTagName("input");
+        Cells[0].select();
+        if (!selectedValues.includes(Cells[0].value)) {
+            selectedValues.push(Cells[0].value)
+            selectedIds.push(currentId)
+            // console.log(Cells[0])
+            selectedIds.forEach((id, index) => {
+                // console.log(id)
+                document.getElementById(id).style.border = "0.5px solid #0000FF";
+            })
+        }
+    }
 }
 var selectValue = (id) => {
     currentId = id;
     Row = document.getElementById(id);
     Cells = Row.getElementsByTagName("input");
-    // console.log(Cells[0].value);
+    console.log(Cells[0]);
     Cells[0].select();
     // document.execCommand("copy");
     // if (window.event) {
@@ -216,6 +277,7 @@ var selectValue = (id) => {
 var KeyPress = (e) => {
     // e.stopPropagation();
     // e.preventDefault();
+    // console.log(e.target)
     var evtobj = window.event ? event : e
     // var Row = document.getElementById(currentId);
     // var Cells = Row.getElementsByTagName("input");
@@ -278,7 +340,7 @@ var KeyPress = (e) => {
             // console.log(Cells[0])
             selectedIds.forEach((id, index) => {
                 // console.log(id)
-                document.getElementById(id).style.border = "1px solid #0000FF";
+                document.getElementById(id).style.border = "0.5px solid #0000FF";
             })
         }
     } else if (evtobj.ctrlKey && evtobj.keyCode == 86 && targetIds.length == 0 && document.getElementById('clipboard').innerHTML != 0) { // paste

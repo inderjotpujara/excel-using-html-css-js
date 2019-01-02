@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sheet</title>
-    <script type="text/javascript" src="../js/ObjectOrientedIndex.js"></script>
+    <script type="text/javascript" src="../js/newIndex.js"></script>
     <!-- <link rel="stylesheet" href="assets/stylesheets/shop.css"> -->
     <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
         crossorigin="anonymous"> -->
@@ -25,25 +25,27 @@
             
         </div> -->
         <div id="setRow">
-            <button style="margin-bottom: 10px;" onclick="newTable.setRows((document.getElementById('r').value));newTable.makeTable()">set Rows</button>
-            <input style="text-align: center" id='r' type="number" >
+            <button style="margin-bottom: 10px;" onclick="newTable.setRows((document.getElementById('r').value));newTable.savedTable(window.localStorage.getItem('data'))">set
+                Rows</button>
+            <input style="text-align: center" id='r' type="number">
         </div>
         <div id="setCol">
-            <button style="margin-left: 10px;" onclick="newTable.setColumns((document.getElementById('c').value));newTable.makeTable()">set
+            <button style="margin-left: 10px;" onclick="newTable.setColumns((document.getElementById('c').value));newTable.savedTable(window.localStorage.getItem('data'))">set
                 Columns</button>
-            <input style="text-align: center"id='c' type="number" >
+            <input style="text-align: center" id='c' type="number">
         </div>
         <div>
-            <button style="margin-left: 10px;" onclick="newTable.sum   ()">Sum Of Selected Cells</button>
-            <input style="text-align: center"id='Sum' type="number" value="">
+            <button style="margin-left: 10px;" onclick="newTable.sum()">Sum Of Selected Cells</button>
+            <input style="text-align: center" id='Sum' type="number" value="">
         </div>
-       
+        
+
     </header>
-    <div id="table">
-    
+    <div style="width:900px;background:antiquewhite;overflow: auto;" id="table">
+
     </div>
     <div>
-       
+
     </div>
     <footer class="primary-footer">
         <div id="clipboard" style="display:none"></div>
