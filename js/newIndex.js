@@ -40,7 +40,14 @@ function Cell() {
         // console.log(id)
         cell.setAttribute("id", id);
     }
-
+    this.setWidth = function () {
+        // console.log(id)
+        cell.style.width = '80px';
+    }
+    this.setReadOnly = function () {
+        input.readOnly = true
+        input.style.background = '#eee'
+    }
 
     this.setOnClick = function (id) {
         cell.setAttribute('onclick', " selectValue(" + id + ")")
@@ -62,7 +69,7 @@ function Cell() {
         var select = selectionCell.getCell()
         // console.log(select)
         cell.style.zIndex = '1'
-        cell.style.opacity='0.9'
+        cell.style.opacity = '0.9'
         cell.appendChild(select)
     }
 
@@ -74,23 +81,25 @@ function SelectionCell() {
     this.column
     var cell = document.createElement('div')
     cell.style.width = 'max-content';
-    cell.style.height='100%'
+    cell.style.height = '100%'
     cell.style.position = 'relative'
     cell.setAttribute('border', '1');
     cell.setAttribute('value', '1');
     cell.setAttribute('onmouseover', 'onMouseOver()')
     var input = document.createElement('input')
     input.style.width = '100%';
-    input.style.background='cyan'
+    input.style.background = 'cyan'
     input.style.textAlign = 'center';
+    input.readOnly = true
     input.style.background = this.color
     this.setInputValue = function (value) {
         // input.setAttribute('value', value)
-        
+
     }
     this.setId = function (id) {
         // console.log(id)
         cell.setAttribute("id", id);
+
     }
     this.appendInput = function () {
         cell.appendChild(input)
@@ -106,7 +115,7 @@ function SelectionCell() {
         cell.style.top = ' 0px'
         cell.style.left = ' 0px'
         cell.style.position = 'absolute'
-        cell.style.display='none'
+        cell.style.display = 'none'
     }
 }
 
@@ -140,28 +149,45 @@ function Table() {
         while (oldTable.hasChildNodes()) {
             oldTable.removeChild(oldTable.firstChild);
         }
-        for (var i = 1; i <= this.rows; i++) {
+        for (var i = 0; i <= this.rows; i++) {
             var row = document.createElement("div");
-            for (var j = 1; j <= this.columns; j++) {
+            for (var j = 0; j <= this.columns; j++) {
                 // console.log("hi")
                 var newCell = new Cell()
-                // var selectionCell = new SelectionCell()
-                // selectionCell.setId(i + "" + j + i + "" + j)
-                // selectionCell.setBackground(i + "" + j + i + "" + j)
-                // selectionCell.setInputValue(i + "" + j + i + "" + j)
-                // selectionCell.appendInput()
-                newCell.setId(i + "" + j)
-                newCell.setOnClick(i + "" + j)
-                newCell.setInputValue(i + "" + j)
-                newCell.setInputOnChange()
-                newCell.setInputOnclick(newCell)
-                newCell.appendInput()
-                newCell.appendChild(i + "" + j + i + "" + j)
-                var cell = newCell.getCell()
-                // var selectionCell = selectionCell.getCell()
-                // console.log(i + "" + j + i + "" + j)
-                // console.log(cell)
+                if (i == 0 && j == 0) {
+                    newCell.setId(i + "" + j)
+                    // newCell.setInputValue()
+                    newCell.appendInput()
+                    newCell.setReadOnly()
+                    newCell.setWidth()
+                } else if (i == 0) {
+                    newCell.setId(i + "" + j)
+                    if (j >= 1 && j <= 26) {
+                        //convert the char code to string (Alphabets)
+                        var value = String.fromCharCode(64 + j);
+                        newCell.setInputValue(value)
+                        //print the result in console
+                        console.log(value);
+                    }
+                    newCell.appendInput()
+                    newCell.setReadOnly()
 
+                } else if (j == 0) {
+                    newCell.setId(i + "" + j)
+                    newCell.setInputValue(i)
+                    newCell.appendInput()
+                    newCell.setReadOnly()
+                    newCell.setWidth()
+                } else if (i != 0 && j != 0) {
+                    newCell.setId(i + "" + j)
+                    newCell.setOnClick(i + "" + j)
+                    newCell.setInputValue(i + "" + j)
+                    newCell.setInputOnChange()
+                    newCell.setInputOnclick(newCell)
+                    newCell.appendInput()
+                    newCell.appendChild(i + "" + j + i + "" + j)
+                }
+                var cell = newCell.getCell()
                 row.appendChild(cell);
                 // row.appendChild(selectionCell)
                 row.style.display = 'flex'
@@ -188,33 +214,57 @@ function Table() {
         // console.log(this.rows)
         // console.log(this.columns)
         var table = document.getElementById('table');
-        for (var i = 1; i <= this.rows; i++) {
+        for (var i = 0; i <= this.rows; i++) {
             var row = document.createElement("div");
-            for (var j = 1; j <= this.columns; j++) {
+            for (var j = 0; j <= this.columns; j++) {
                 // console.log('inside saved table')
                 var newCell = new Cell()
-                
-                // console.log((i + "" + j) + 1)
-                // debugger
-                // console.log(data[count]);
+                if (i == 0 && j == 0) {
+                    newCell.setId(i + "" + j)
+                    // newCell.setInputValue()
+                    newCell.appendInput()
+                    newCell.setReadOnly()
+                    newCell.setWidth()
+                } else if (i == 0) {
+                    newCell.setId(i + "" + j)
+                    if (j >= 1 && j <= 26) {
+                        //convert the char code to string (Alphabets)
+                        var value = String.fromCharCode(64 + j);
+                        newCell.setInputValue(value)
+                        //print the result in console
+                        console.log(value);
+                    }
+                    newCell.appendInput()
+                    newCell.setReadOnly()
 
-                if (data[count] && Object.keys(data[count]) == i + "" + j) {
+                } else if (j == 0) {
+                    newCell.setId(i + "" + j)
+                    newCell.setInputValue(i)
+                    newCell.appendInput()
+                    newCell.setReadOnly()
+                    newCell.setWidth()
+                } else if (i != 0 && j != 0) {
+                    newCell.setId(i + "" + j)
+                    newCell.setOnClick(i + "" + j)
+                    if (data[count] && Object.keys(data[count]) == i + "" + j) {
 
-                    newCell.setInputValue(Object.values(data[count]))
-                    count++
-                } else {
+                        newCell.setInputValue(Object.values(data[count]))
+                        count++
+                    } else {
 
-                    newCell.setInputValue(i + "" + j)
+                        newCell.setInputValue(i + "" + j)
+                    }
+
+                    newCell.setInputOnChange()
+                    newCell.appendInput()
+                    newCell.appendChild(i + "" + j + i + "" + j)
                 }
 
-                newCell.setInputOnChange()
-                newCell.appendInput()
-                newCell.appendChild(i + "" + j + i + "" + j)
                 var cell = newCell.getCell()
-                
+
                 // console.log(cell)
                 row.appendChild(cell);
-                row.appendChild(selectionCell)
+                // row.appendChild(selectionCell)
                 row.style.display = 'flex'
                 let idRow = i
                 let idColumn = j
@@ -319,8 +369,12 @@ var onMouseOver = () => {
     if (window.event.which == 1) {
         event.preventDefault();
 
-
-        var newFinalId = event.target.parentElement.id
+        console.log(event.target.parentElement.parentElement.id)
+        if (event.target.parentElement.parentElement.id) {
+            var newFinalId = event.target.parentElement.parentElement.id
+        } else {
+            var newFinalId = event.target.parentElement.id
+        }
 
         console.log("1", "initial :-", initialId, "newfinal :-", newFinalId, "final :-", finalId)
         // dragSelect(initialId, newFinalId)
@@ -459,6 +513,7 @@ var removeSelections = (start, end, type) => {
                     console.log(selectedIds, selectedValues)
                     // document.getElementById(a).style.border = "none";
                     document.getElementById(a).getElementsByTagName('input')[0].style.background = "#ffffff";
+                    document.getElementById(a + a).style.display = 'none'
                 }
             }
         })
@@ -503,7 +558,7 @@ var dragSelect = (initialId, finalId) => {
                 selectedIds.forEach((id, index) => {
                     // console.log(id)
                     // document.getElementById(id).getElementsByTagName('input')[0].style.background = "#0000FF";
-                    document.getElementById(id+id).style.display='block'
+                    document.getElementById(id + id).style.display = 'block'
                 })
             }
         }
@@ -563,7 +618,7 @@ var KeyPress = (e) => {
             selectedIds.forEach((id, index) => {
                 // console.log(id)
                 // document.getElementById(id).getElementsByTagName('input')[0].style.background = "#0000FF";
-                document.getElementById(id+id).style.display='block'
+                document.getElementById(id + id).style.display = 'block'
 
                 let idTag = document.getElementById(id)
                 let tag = idTag.getElementsByTagName('input')
@@ -592,7 +647,7 @@ var KeyPress = (e) => {
             selectedIds.forEach((id, index) => {
                 // console.log(id)
                 // document.getElementById(id).getElementsByTagName('input')[0].style.background = "#0000FF";
-                document.getElementById(id+id).style.display='block'
+                document.getElementById(id + id).style.display = 'block'
             })
         }
     } else if (evtobj.ctrlKey && evtobj.keyCode == 86 && targetIds.length == 0 && document.getElementById('clipboard').innerHTML != 0) { // paste
